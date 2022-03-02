@@ -1,0 +1,5 @@
+.idea
+node_modules
+*.d.ts
+*.js
+!jest.config.js
