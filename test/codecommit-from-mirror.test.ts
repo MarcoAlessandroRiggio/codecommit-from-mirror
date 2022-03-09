@@ -9,7 +9,7 @@ const setup = (props?: CodecommitFromMirrorStackProps): Template => {
 }
 
 const checkIfThereIsA = (resource: string) => {
-    const template = setup({repoName: ["unused"]});
+    const template = setup({repoNames: ["unused"]});
     template.hasResource(resource, {});
 }
 

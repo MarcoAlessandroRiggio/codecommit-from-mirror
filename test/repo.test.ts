@@ -16,15 +16,15 @@ const setup = (props?: RepoProps): Template => {
     const stack = new RepoStack(app, 'MyTestStack', props);
     return Template.fromStack(stack);
 }
-
+const CFN_REPOSITORY = `AWS::CodeCommit::Repository`;
 const repoName = `wonderfulRepoName`;
 const checkIfThereIsA = (resource: string) => setup({repoName}).hasResource(resource, {});
 
 describe(`Repo Class`, () => {
-    test(`Have a Repo`, () => checkIfThereIsA(`AWS::CodeCommit::Repository`))
+    test(`Have a Repo`, () => checkIfThereIsA(CFN_REPOSITORY))
     test('The repo have the right name', () => {
         const template = setup({repoName});
-        template.hasResourceProperties(`AWS::CodeCommit::Repository`, {"RepositoryName": repoName});
+        template.hasResourceProperties(CFN_REPOSITORY, {"RepositoryName": repoName});
     })
     test('There is a CfnOutput for the ssh repo url', () => {
         const template = setup({repoName});

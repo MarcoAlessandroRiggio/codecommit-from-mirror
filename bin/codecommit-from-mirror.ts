@@ -4,4 +4,4 @@ import * as cdk from 'aws-cdk-lib';
 import { CodecommitFromMirrorStack } from '../lib/codecommit-from-mirror-stack';
 
 const app = new cdk.App();
-new CodecommitFromMirrorStack(app, 'CodecommitFromMirrorStack', {repoName: ["test"]});
+new CodecommitFromMirrorStack(app, 'CodecommitFromMirrorStack', {repoNames: ["test"]});
