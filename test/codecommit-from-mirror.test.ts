@@ -1,17 +1,25 @@
-// import * as cdk from 'aws-cdk-lib';
-// import { Template } from 'aws-cdk-lib/assertions';
-// import * as CodecommitFromMirror from '../lib/codecommit_from_mirror-stack';
+import * as cdk from "aws-cdk-lib";
+import {CodecommitFromMirrorStack, CodecommitFromMirrorStackProps} from "../lib/codecommit-from-mirror-stack";
+import {Template} from "aws-cdk-lib/assertions";
 
-// example test. To run these tests, uncomment this file along with the
-// example resource in lib/codecommit-from-mirror-stack.ts
-test('SQS Queue Created', () => {
-//   const app = new cdk.App();
-//     // WHEN
-//   const stack = new CodecommitFromMirror.CodecommitFromMirrorStack(app, 'MyTestStack');
-//     // THEN
-//   const template = Template.fromStack(stack);
+const setup = (props?: CodecommitFromMirrorStackProps): Template => {
+    const app = new cdk.App();
+    const stack = new CodecommitFromMirrorStack(app, 'MyTestStack', props);
+    return Template.fromStack(stack);
+}
 
-//   template.hasResourceProperties('AWS::SQS::Queue', {
-//     VisibilityTimeout: 300
-//   });
-});
+const checkIfThereIsA = (resource: string) => {
+    const template = setup({repoName: ["unused"]});
+    template.hasResource(resource, {});
+}
+
+describe(`CodecommitFromMirrorStack`, () => {
+    test(`Have a Group`, () => checkIfThereIsA(`AWS::IAM::Group`))
+    test(`Have a User`, () => checkIfThereIsA(`AWS::IAM::User`))
+    test(`The User is a member in the group`, () => {
+        const template = setup();
+        template.hasResourceProperties(`AWS::IAM::User`, {
+            "Groups": [{"Ref": Object.keys(template.findResources(`AWS::IAM::Group`)).pop()}]
+        });
+    })
+})
