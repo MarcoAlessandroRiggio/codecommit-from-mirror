@@ -32,7 +32,7 @@ describe(`Repo Class`, () => {
         const output = template.findOutputs(`repoSshUrl${repoName}`, {
             Value: Match.objectEquals({
                 "Fn::GetAtt": Match.arrayEquals([
-                    Object.keys(template.findResources(`AWS::CodeCommit::Repository`)).pop(),
+                    Object.keys(template.findResources(CFN.CODECOMMIT_REPOSITORY)).pop(),
                     `CloneUrlSsh`
                 ])
             })
